@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shreyas' Socket</title>
+  </head>
+  <body>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <ul id="messages"></ul>
+
+    <script src="socket.io.min.js"></script>
+    <script>
+      var socket = io()
+
+      var form = document.getElementById('form')
+      var input = document.getElementById('input')
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault()
+        if (input.value) {
+          socket.emit('chat message', input.value)
+          var item = document.createElement('li')
+          item.textContent = '[   sent   ] : ' + input.value
+          messages.appendChild(item)
+          input.value = ''
+        }
+      })
+
+      socket.on('chat message', function (msg) {
+        var item = document.createElement('li')
+        item.textContent = '[ received ] : ' + msg
+        messages.appendChild(item)
+      })
+    </script>
+  </body>
+</html>
